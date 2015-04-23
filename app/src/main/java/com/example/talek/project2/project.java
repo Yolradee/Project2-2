@@ -111,6 +111,7 @@ public class project extends Activity {
                    LoadBitmap_atask loadbitmap = new LoadBitmap_atask();
                    loadbitmap.execute(urlRqs3DPie);
                 //   Bitmap bm3DPie = loadChart(urlRqs3DPie);
+
                    helper = new MovieDBHelper(getApplicationContext());
                    SQLiteDatabase db = helper.getWritableDatabase();
                    ContentValues r = new ContentValues();
@@ -121,12 +122,16 @@ public class project extends Activity {
                    long new_id = db.insert("movie",null,r);
                    System.out.println("id"+new_id);
 
+                   PostMessageTask p = new PostMessageTask();
+                   p.execute(br,fast,thor,taken);
 //                   if(BR.length()>0 && A.length()>0 && B.length()>0 && C.length()>0){
 //                       PostMessageTask p = new PostMessageTask();
 //
 //                       p.execute(br,fast,thor,taken);
 //                 }
+
                }};
+
 
 
 
@@ -221,7 +226,6 @@ public class project extends Activity {
 
                return is;
 
-
            }
 
 
@@ -235,7 +239,8 @@ public class project extends Activity {
             t.show();
         }
     }
-}
+
+
 
     class PostMessageTask extends AsyncTask<String, Void, Boolean> {
         String line;
@@ -250,7 +255,6 @@ public class project extends Activity {
             HttpClient h = new DefaultHttpClient();
             HttpPost p = new HttpPost("http://ict.siit.tu.ac.th/~u5522773787/its333/post.php");
 
-            //////////////////////
             List<NameValuePair> values = new ArrayList<NameValuePair>();
             values.add(new BasicNameValuePair("branch", brP));
             values.add(new BasicNameValuePair("F", fastP));
@@ -279,16 +283,17 @@ public class project extends Activity {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-//                Toast t = Toast.makeText(project.this.getApplicationContext(),
-//                        "Successfully post your status",
-//                        Toast.LENGTH_SHORT);
-//                t.show();
-                Log.e("PostMessageTask","Successfully Post");
+                //Toast t = Toast.makeText(project.this.getApplicationContext(),"Successfully post your status",
+                //Toast.LENGTH_SHORT);
+                // t.show();
+                Log.e("PostMessageTask", " Successfully Post");
+
             } else {
-               Log.e("PostMessageTask","unable Post");
+                Log.e("PostMessageTask", "unable Post");
             }
         }
 
     }
+}
 
 
