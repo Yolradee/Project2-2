@@ -18,10 +18,10 @@ public class MovieDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE movie (" +
                 "_id integer primary key autoincrement," +
-                "branch text not null," +
-                "F int not null," +
-                "A int not null," +
-                "K int not null);";
+                "Branch text not null," +
+                "Fast7 int not null," +
+                "Thor int not null," +
+                "Taken int not null);";
         db.execSQL(sql);
     }
 

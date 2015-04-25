@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -37,28 +38,18 @@ public class rank extends ActionBarActivity {
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
-    String br;
-    String fast;
-    String thor;
-    String taken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+
         MovieDBHelper helper = new MovieDBHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, code, (grade ||' ( ' || credit || ' credit' || ')') g FROM course;", null);
-
-        adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2,
-                cursor,
-                new String[] {"",""},
-                new int[] {android.R.id.text1,android.R.id.text2}, 0);
 
 
-        ListView lv = (ListView)findViewById(R.id.listView);
-        lv.setAdapter(adapter);
-        lv.setOnItemLongClickListener(this);
+        LoadNumberTask task = new LoadNumberTask();
+        task.execute();
 
     }
 
@@ -79,8 +70,6 @@ public class rank extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            LoadNumberTask task = new LoadNumberTask();
-            task.execute();
             return true;
         }
 
@@ -114,20 +103,25 @@ public class rank extends ActionBarActivity {
                    //Parsing JSON and displaying messages
                    JSONObject json = new JSONObject(buffer.toString());
                    JSONArray jmsg = json.getJSONArray("msg");
-                   for (int i = 0; i < jmsg.length(); i++) {
-                       JSONObject jmessage = jmsg.getJSONObject(i);
-                       String br = jmessage.getString("branch");
-                       String fast = jmessage.getString("F");
-                       String thor = jmessage.getString("A");
-                       String taken = jmessage.getString("K");
+
+
+                       JSONObject jmessage = jmsg.getJSONObject(0);
+                       String br = jmessage.getString("Branch");
+                       String fast = jmessage.getString("Fast7");
+                       String thor = jmessage.getString("Thor");
+                       String taken = jmessage.getString("Taken");
+
                        Map<String, String> item = new HashMap<String, String>();
-                       item.put("branch", br);
-                       item.put("F", fast);
-                       item.put("A", thor);
-                       item.put("K", taken);
+                       item.put("Branch", br);
+                       item.put("Fast7", fast);
+                       item.put("Thor", thor);
+                       item.put("Taken", taken);
                        data.add(0, item);
+
                        System.out.println("Hellooooooooooooooo");
-                   }
+
+                   TextView tv = (TextView) findViewById(R.id.nm1);
+                   tv.setText(String.format("%d",fast));
 
                    return true;
 
