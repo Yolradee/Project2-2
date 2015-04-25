@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
@@ -35,70 +36,44 @@ import java.util.logging.Handler;
 
 public class rank extends ActionBarActivity {
 
-    ArrayList<Map<String, String>> data;
+    ArrayList<HashMap<String, String>> data;
     MovieDBHelper helper;
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
+    String F,T,Ta;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
-<<<<<<< HEAD
 
-        MovieDBHelper helper = new MovieDBHelper(this);
-        SQLiteDatabase db = helper.getReadableDatabase();
-=======
->>>>>>> origin/master
+        data = new ArrayList<HashMap<String, String>>();
 
-        LoadNumberTask task = new LoadNumberTask();
-        task.execute();
-       // data = new ArrayList<HashMap<String,String>>();
 
-<<<<<<< HEAD
-        LoadNumberTask task = new LoadNumberTask();
-        task.execute();
-=======
-        adapter= new SimpleAdapter(this, data, R.layout.activity_project,
-                new String[] {"F", "A", "K"}, new int[] {R.id.nm1, R.id.nm2, R.id.nm3});
->>>>>>> origin/master
+        adapter= new SimpleAdapter(this, data, R.layout.col,
+                new String[] {"Fast7", "Thor", "Taken"},
+                new int[] {R.id.nm1, R.id.nm2, R.id.nm3});
 
         ListView l = (ListView)findViewById(R.id.listView);
         l.setAdapter(adapter);
+        LoadNumberTask task = new LoadNumberTask();
+        task.execute();
+ }
+
+    public void addClicked(View v){
+
+        Intent i = new Intent(this, insertName.class);
+        startActivity(i);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
-        // This method is called when this activity is put foreground.
+    public void showClicked(View v) {
 
+        Intent i = new Intent(this, showdata.class);
+        startActivity(i);
+    }
 
-
-//            TextView tvm1 = (TextView)findViewById(R.id.m1);
-//            tvm1.setText(String.format("Fast 7"+"%d", tf));
-//            TextView tvnm1 = (TextView)findViewById(R.id.nm1);
-//            tvnm1.setText(String.format("%d", tf));
-
-
-        }
-
-
-//        TextView tvGP = (TextView)findViewById(R.id.nm1);
-//        TextView tvCR = (TextView)findViewById(R.id.nm2);
-//        TextView tvGPA = (TextView)findViewById(R.id.nm3);
-
-//        tvGP.setText(String.format("%.1f", gp));
-//        tvCR.setText(String.format("%d", cr));
-//        tvGPA.setText(String.format("%.2f", gpa));
-
-//        db.close();
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,10 +91,6 @@ public class rank extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
             return true;
         }
 
@@ -135,9 +106,9 @@ public class rank extends ActionBarActivity {
            StringBuilder buffer = new StringBuilder();
            String line;
 
-           String fastL;
-           String thorL;
-           String takenL;
+           int fastL;
+           int thorL;
+           int takenL;
 
 
            try {
@@ -153,55 +124,67 @@ public class rank extends ActionBarActivity {
                        buffer.append(line);
                    }
 
-                   Log.e("LoadNumberTask", buffer.toString());
+//                   Log.e("LoadNumberTask", buffer.toString());
 
                    //Parsing JSON and displaying messages
                    JSONObject json = new JSONObject(buffer.toString());
                    JSONArray jmsg = json.getJSONArray("msg");
 
-<<<<<<< HEAD
 
                        JSONObject jmessage = jmsg.getJSONObject(0);
-                       String br = jmessage.getString("Branch");
-                       String fast = jmessage.getString("Fast7");
-                       String thor = jmessage.getString("Thor");
-                       String taken = jmessage.getString("Taken");
 
-                       Map<String, String> item = new HashMap<String, String>();
-                       item.put("Branch", br);
-                       item.put("Fast7", fast);
-                       item.put("Thor", thor);
-                       item.put("Taken", taken);
-                       data.add(0, item);
-
-                       System.out.println("Hellooooooooooooooo");
-
-                   TextView tv = (TextView) findViewById(R.id.nm1);
-                   tv.setText(String.format("%d",fast));
-=======
-                   for (int i = 0; i < jmsg.length(); i++) {
-                       JSONObject jmessage = jmsg.getJSONObject(i);
-
-                       fastL = jmessage.getString("Fast7");
-                       thorL = jmessage.getString("Thor");
-                       takenL = jmessage.getString("Taken");
+                       fastL = jmessage.getInt("Fast7");
+                       thorL = jmessage.getInt("Thor");
+                       takenL = jmessage.getInt("Taken");
 
 
                        HashMap<String, String> item;
-                       item= new HashMap<String, String>();
+                       item = new HashMap<String, String>();
 
-                       item.put("Fast7", fastL);
-                       item.put("Thor", thorL);
-                       item.put("Taken", takenL);
-                       data.add(0, item);
-                       System.out.println("Totalllllll");
+                         if(fastL>=thorL && thorL >=takenL) {
+                             item.put("Fast7", String.format("Fast7  " + "%d",fastL));
+                             item.put("Thor", String.format("Thor  " + "%d",thorL));
+                             item.put("Taken", String.format("Taken  " + "%d",takenL));
+                             data.add(0, item);
+                         }
+                          if(fastL>=thorL && thorL <=takenL) {
+                             item.put("Fast7", String.format("Fast7  "+ "%d",fastL));
+                             item.put("Thor", String.format("Thor  "+ "%d",takenL));
+                             item.put("Taken", String.format("Taken  " + "%d",thorL));
+                             data.add(0, item);
                    }
->>>>>>> origin/master
+                         if(fastL<=thorL && fastL >=takenL) {
+                             item.put("Fast7", String.format("Thor  "+ "%d",thorL));
+                             item.put("Thor", String.format("Fast7  " + "%d",fastL));
+                             item.put("Taken", String.format("Taken  " +"%d",takenL));
+                             data.add(0, item);
+                   }
+                        if(fastL<=thorL && fastL <=takenL) {
+                            item.put("Fast7", String.format("Thor  "+ "%d",thorL));
+                            item.put("Thor", String.format("Taken  " +"%d",takenL));
+                            item.put("Taken", String.format("Fast7  "+ "%d",fastL));
+                            data.add(0, item);
+                   }
+                        if(fastL>=thorL && fastL <=takenL) {
+                            item.put("Fast7", String.format("Taken  " +"%d",takenL));
+                            item.put("Thor", String.format("Fast7  " + "%d",fastL));
+                            item.put("Taken", String.format("Thor  "+ "%d",thorL));
+                            data.add(0, item);
+                   }
+                        if(fastL<=thorL && fastL <=takenL) {
+                            item.put("Fast7", String.format("Taken  " + "%d",takenL));
+                            item.put("Thor", String.format("Thor  " + "%d",thorL));
+                            item.put("Taken", String.format("Fast7  " +"%d",fastL));
+                            data.add(0, item);
+                   }
 
-
-                   return true;
 
                }
+
+
+               return true;
+
+
            } catch (MalformedURLException e) {
                Log.e("LoadNumberTask", "Invalid URL");
            } catch (IOException e) {
@@ -214,13 +197,11 @@ public class rank extends ActionBarActivity {
 
            protected void onPostExecute(Boolean result) {
                if (result) {
-                   adapter.notifyDataSetChanged();
-                   Toast t;
-                   t = Toast.makeText(rank.this.getApplicationContext(),
-                           "Updated the timeline",
-                           Toast.LENGTH_SHORT);
-                   t.show();
+                   Log.e("LoadNumberTask", "Successfully Load");
+               } else {
+                   Log.e("LoadNumberTask", "Unable Load");
+
                }
            }
-   }
+       }
 }

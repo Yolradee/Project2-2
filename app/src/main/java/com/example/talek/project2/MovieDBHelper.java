@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MovieDBHelper extends SQLiteOpenHelper {
 
-    private static final String name = "movie.sqlite3";
+    private static final String name = "movies.sqlite3";
     private static final int version = 2;
 
 
@@ -16,12 +16,11 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE movie (" +
+        String sql = "CREATE TABLE movies (" +
                 "_id integer primary key autoincrement," +
-                "Branch text not null," +
-                "Fast7 int not null," +
-                "Thor int not null," +
-                "Taken int not null);";
+                "fastA int default 0," +
+                "thorA int default 0," +
+                "takenA int default 0);";
         db.execSQL(sql);
     }
 
@@ -29,7 +28,7 @@ public class MovieDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS movie;";
+        String sql = "DROP TABLE IF EXISTS movies;";
         db.execSQL(sql);
         this.onCreate(db);
     }

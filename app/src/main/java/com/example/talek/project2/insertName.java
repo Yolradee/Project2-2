@@ -1,65 +1,62 @@
 package com.example.talek.project2;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
+        import java.io.BufferedReader;
+        import java.io.IOException;
+        import java.io.InputStream;
 
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.content.ContentValues;
+        import android.content.Intent;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.database.Cursor;
+        import android.os.AsyncTask;
+        import android.os.Bundle;
+        import android.support.v7.app.ActionBarActivity;
+        import android.util.Log;
+        import android.widget.SimpleAdapter;
+        import android.widget.TextView;
+        import android.widget.Toast;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.io.InputStreamReader;
+        import java.io.UnsupportedEncodingException;
+        import java.net.HttpURLConnection;
+        import java.net.MalformedURLException;
+        import java.net.URL;
+        import java.net.URLConnection;
+        import android.app.Activity;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
+        import android.os.Bundle;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.EditText;
+        import android.widget.ImageView;
+        import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.apache.http.HttpResponse;
+        import org.apache.http.NameValuePair;
+        import org.apache.http.client.ClientProtocolException;
+        import org.apache.http.client.HttpClient;
+        import org.apache.http.client.entity.UrlEncodedFormEntity;
+        import org.apache.http.client.methods.HttpPost;
+        import org.apache.http.impl.client.DefaultHttpClient;
+        import org.apache.http.message.BasicNameValuePair;
+        import org.json.JSONArray;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Handler;
+        import java.util.ArrayList;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
+        import java.util.logging.Handler;
 
-public class project extends Activity {
+public class insertName extends ActionBarActivity {
 
-    ArrayList<Map<String, String>> data;
-    SimpleAdapter adapter;
-    Handler h;
-    Handler handler;
     Bitmap bm3DPie = null;
-
-    String br;
+    String user;
     String fast;
     String thor;
     String taken;
@@ -69,10 +66,11 @@ public class project extends Activity {
     final static String urlp3Api
             = "?chxs=0,000000,25&chxt=x&cht=p3&chdls=000000,20&chs=700x350&chco=FF9999|A3FF47|75D1FF&chl=Fast7|Thor|Taken&chd=t:";
 
-    EditText branch, inputA, inputB, inputC;
+    EditText  inputA, inputB, inputC;
     Button generate;
     ImageView pieChart;
     MovieDBHelper helper;
+
 
     /**
      * Called when the activity is first created.
@@ -80,8 +78,28 @@ public class project extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project);
-        branch = (EditText) findViewById(R.id.branch);
+        setContentView(R.layout.insert_name);
+
+        Intent data = this.getIntent();
+        user = data.getStringExtra("user");
+
+          if(user.equals("rama9")) {
+            TextView tv = (TextView) findViewById(R.id.textView2);
+            tv.setText("Branch : Rama9");
+        }else if(user.equals("rama3")) {
+            TextView tv = (TextView) findViewById(R.id.textView2);
+            tv.setText("Branch : Rama3");
+        }else if(user.equals("rama2")) {
+            TextView tv = (TextView) findViewById(R.id.textView2);
+            tv.setText("Branch : Rama2");
+        }else if(user.equals("siam")) {
+            TextView tv = (TextView) findViewById(R.id.textView2);
+            tv.setText("Branch : Siam");
+        }else if(user.equals("rangsit")) {
+              TextView tv = (TextView) findViewById(R.id.textView2);
+              tv.setText("Branch : Rangsit");
+         }
+
         inputA = (EditText) findViewById(R.id.adata);
         inputB = (EditText) findViewById(R.id.bdata);
         inputC = (EditText) findViewById(R.id.cdata);
@@ -91,17 +109,58 @@ public class project extends Activity {
 
 
     }
+
+//     Button.OnClickListener generateOnClickListener
+//                = new Button.OnClickListener(){
+//
+//        @Override
+//        public void onClick(View arg0) {
+//
+//            String A = inputA.getText().toString();
+//            int AA = Integer.parseInt(A);
+//
+//            String B = inputB.getText().toString();
+//            int BB = Integer.parseInt(B);
+//
+//            String C = inputC.getText().toString();
+//            int CC = Integer.parseInt(C);
+//
+//            System.out.println(" " + AA + "   " + BB + "   " + CC);
+//
+//            String urlRqs3DPie = urlGoogleChart
+//                    + urlp3Api
+//                    + AA + "," + BB + "," + CC;
+//            Log.d("R_url", urlRqs3DPie);
+//            LoadBitmap_atask loadbitmap = new LoadBitmap_atask();
+//            loadbitmap.execute(urlRqs3DPie);
+//            //   Bitmap bm3DPie = loadChart(urlRqs3DPie);
+//
+//            helper = new MovieDBHelper(getApplicationContext());
+//            SQLiteDatabase db = helper.getWritableDatabase();
+//            ContentValues r = new ContentValues();
+//
+//            r.put("f", A);
+//            r.put("t", B);
+//            r.put("ta", C);
+//            long new_id = db.insert("movies", null, r);
+//            System.out.println("id" + new_id);
+//
+//            fast = inputA.getText().toString().trim();
+//            thor = inputB.getText().toString().trim();
+//            taken = inputC.getText().toString().trim();
+
+
     Button.OnClickListener generateOnClickListener
-            = new Button.OnClickListener() {
+            = new Button.OnClickListener(){
 
         @Override
         public void onClick(View arg0) {
             // TODO Auto-generated method stub
-            String BR = branch.getText().toString();
+
             String A = inputA.getText().toString();
             String B = inputB.getText().toString();
             String C = inputC.getText().toString();
-            System.out.println(BR + " " + A + "   " + B + "   " + C);
+            System.out.println( " " + A + "   " + B + "   " + C);
             String urlRqs3DPie = urlGoogleChart
                     + urlp3Api
                     + A + "," + B + "," + C;
@@ -109,38 +168,52 @@ public class project extends Activity {
             LoadBitmap_atask loadbitmap = new LoadBitmap_atask();
             loadbitmap.execute(urlRqs3DPie);
             //   Bitmap bm3DPie = loadChart(urlRqs3DPie);
-
             helper = new MovieDBHelper(getApplicationContext());
             SQLiteDatabase db = helper.getWritableDatabase();
             ContentValues r = new ContentValues();
-            r.put("Branch", BR);
-            r.put("Fast7", A);
-            r.put("Thor", B);
-            r.put("Taken", C);
-            long new_id = db.insert("movie", null, r);
+
+            r.put("fastA", A);
+            r.put("thorA", B);
+            r.put("takenA", C);
+            long new_id = db.insert("movies", null, r);
             System.out.println("id" + new_id);
 
-            br = branch.getText().toString().trim();
             fast = inputA.getText().toString().trim();
             thor = inputB.getText().toString().trim();
             taken = inputC.getText().toString().trim();
 
-            if(BR.length()>0 && A.length()>0 && B.length()>0 && C.length()>0){
-                System.out.println(br);
-                PostMessageTask p = new PostMessageTask();
+            PostMessageTask p = new PostMessageTask();
+            p.execute(fast, thor, taken);
 
-                p.execute(br,fast,thor,taken);
-            }
-        }
-    };
+        }};
+
+//            if (fast.length() > 0 && thor.length() > 0 && taken.length() > 0) {
+//                Toast t = Toast.makeText(insertName.this.getApplicationContext(),
+//                        "Insert to database",
+//                        Toast.LENGTH_SHORT);
+//                t.show();
+//
+//            }else if (fast.equals("")&& thor.equals("")&& taken.equals("")) {
+//                 Toast t = Toast.makeText(insertName.this,
+//                    "Please add information",
+//                    Toast.LENGTH_SHORT);
+//            t.show();
+//
+//        }
+//            PostMessageTask p = new PostMessageTask();
+//            p.execute(fast, thor, taken);
 
 
-    public void RankClick(View v) {
-
+    public void ShowClick(View v) {
         Intent i;
-        i = new Intent(this, rank.class);
+        i = new Intent(this, showdata.class);
+        i.putExtra("user",user);
+        i.putExtra("f",fast);
+        i.putExtra("t",thor);
+        i.putExtra("tk",taken);
         startActivity(i);
     }
+
 
     class LoadBitmap_atask extends AsyncTask<String, String, Boolean> {
 
@@ -161,7 +234,7 @@ public class project extends Activity {
             bm3DPie = in_bm3DPie;
 
             if (bm3DPie == null) {
-                Toast.makeText(project.this,
+                Toast.makeText(insertName.this,
                         "Problem in loading 3D Pie Chart",
                         Toast.LENGTH_LONG).show();
             } else {
@@ -233,16 +306,16 @@ public class project extends Activity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-            String brP = params[0];
-            String fastP = params[1];
-            String thorP = params[2];
-            String takenP = params[3];
+
+            String fastP = params[0];
+            String thorP = params[1];
+            String takenP = params[2];
             HttpClient h = new DefaultHttpClient();
             HttpPost p = new HttpPost("http://ict.siit.tu.ac.th/~u5522773787/its333/post.php");
 
             //////////////////////
             List<NameValuePair> values = new ArrayList<NameValuePair>();
-            values.add(new BasicNameValuePair("Branch", brP));
+
             values.add(new BasicNameValuePair("Fast7", fastP));
             values.add(new BasicNameValuePair("Thor", thorP));
             values.add(new BasicNameValuePair("Taken", takenP));
@@ -281,6 +354,11 @@ public class project extends Activity {
 
     }
 }
+
+
+
+
+
 
 
 
