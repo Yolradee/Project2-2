@@ -19,13 +19,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".rank"
-            android:label="@string/title_activity_rank" >
+            android:name=".rank">
+
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_main" >
-        </activity>
+
+
     </application>
 
 </manifest>

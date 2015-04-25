@@ -1,12 +1,17 @@
 package com.example.talek.project2;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,11 +37,29 @@ public class rank extends ActionBarActivity {
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
-
+    String br;
+    String fast;
+    String thor;
+    String taken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+        MovieDBHelper helper = new MovieDBHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT _id, code, (grade ||' ( ' || credit || ' credit' || ')') g FROM course;", null);
+
+        adapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_2,
+                cursor,
+                new String[] {"",""},
+                new int[] {android.R.id.text1,android.R.id.text2}, 0);
+
+
+        ListView lv = (ListView)findViewById(R.id.listView);
+        lv.setAdapter(adapter);
+        lv.setOnItemLongClickListener(this);
+
     }
 
 
@@ -56,10 +79,13 @@ public class rank extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            LoadNumberTask task = new LoadNumberTask();
+            task.execute();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
    class LoadNumberTask extends AsyncTask<String, Void, Boolean> {
@@ -83,7 +109,7 @@ public class rank extends ActionBarActivity {
                        buffer.append(line);
                    }
 
-                   Log.e("LoadMessageTask", buffer.toString());
+                   Log.e("LoadNumberTask", buffer.toString());
 
                    //Parsing JSON and displaying messages
                    JSONObject json = new JSONObject(buffer.toString());
@@ -107,17 +133,24 @@ public class rank extends ActionBarActivity {
 
                }
            } catch (MalformedURLException e) {
-               Log.e("LoadMessageTask", "Invalid URL");
+               Log.e("LoadNumberTask", "Invalid URL");
            } catch (IOException e) {
-               Log.e("LoadMessageTask", "I/O Exception");
+               Log.e("LoadNumberTask", "I/O Exception");
            } catch (JSONException e) {
-               Log.e("LoadMessageTask", "Invalid JSON");
+               Log.e("LoadNumberTask", "Invalid JSON");
            }
            return false;
-
-
        }
 
-
+           protected void onPostExecute(Boolean result) {
+               if (result) {
+                   adapter.notifyDataSetChanged();
+                   Toast t;
+                   t = Toast.makeText(rank.this.getApplicationContext(),
+                           "Updated the timeline",
+                           Toast.LENGTH_SHORT);
+                   t.show();
+               }
+           }
    }
 }
