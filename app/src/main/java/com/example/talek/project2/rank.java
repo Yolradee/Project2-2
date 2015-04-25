@@ -1,5 +1,6 @@
 package com.example.talek.project2;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -34,34 +36,55 @@ import java.util.logging.Handler;
 public class rank extends ActionBarActivity {
 
     ArrayList<Map<String, String>> data;
+    MovieDBHelper helper;
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
-    String br;
-    String fast;
-    String thor;
-    String taken;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
-        MovieDBHelper helper = new MovieDBHelper(this);
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT _id, code, (grade ||' ( ' || credit || ' credit' || ')') g FROM course;", null);
 
-        adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2,
-                cursor,
-                new String[] {"",""},
-                new int[] {android.R.id.text1,android.R.id.text2}, 0);
+        LoadNumberTask task = new LoadNumberTask();
+        task.execute();
+       // data = new ArrayList<HashMap<String,String>>();
 
+        adapter= new SimpleAdapter(this, data, R.layout.activity_project,
+                new String[] {"F", "A", "K"}, new int[] {R.id.nm1, R.id.nm2, R.id.nm3});
 
-        ListView lv = (ListView)findViewById(R.id.listView);
-        lv.setAdapter(adapter);
-        lv.setOnItemLongClickListener(this);
-
+        ListView l = (ListView)findViewById(R.id.listView);
+        l.setAdapter(adapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // This method is called when this activity is put foreground.
+
+
+
+//            TextView tvm1 = (TextView)findViewById(R.id.m1);
+//            tvm1.setText(String.format("Fast 7"+"%d", tf));
+//            TextView tvnm1 = (TextView)findViewById(R.id.nm1);
+//            tvnm1.setText(String.format("%d", tf));
+
+
+        }
+
+
+//        TextView tvGP = (TextView)findViewById(R.id.nm1);
+//        TextView tvCR = (TextView)findViewById(R.id.nm2);
+//        TextView tvGPA = (TextView)findViewById(R.id.nm3);
+
+//        tvGP.setText(String.format("%.1f", gp));
+//        tvCR.setText(String.format("%d", cr));
+//        tvGPA.setText(String.format("%.2f", gpa));
+
+//        db.close();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -79,8 +102,7 @@ public class rank extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            LoadNumberTask task = new LoadNumberTask();
-            task.execute();
+
             return true;
         }
 
@@ -95,6 +117,11 @@ public class rank extends ActionBarActivity {
            BufferedReader reader;
            StringBuilder buffer = new StringBuilder();
            String line;
+
+           String fastL;
+           String thorL;
+           String takenL;
+
 
            try {
                URL u = new URL("http://ict.siit.tu.ac.th/~u5522773787/its333/fetch.php");
@@ -114,20 +141,25 @@ public class rank extends ActionBarActivity {
                    //Parsing JSON and displaying messages
                    JSONObject json = new JSONObject(buffer.toString());
                    JSONArray jmsg = json.getJSONArray("msg");
+
                    for (int i = 0; i < jmsg.length(); i++) {
                        JSONObject jmessage = jmsg.getJSONObject(i);
-                       String br = jmessage.getString("branch");
-                       String fast = jmessage.getString("F");
-                       String thor = jmessage.getString("A");
-                       String taken = jmessage.getString("K");
-                       Map<String, String> item = new HashMap<String, String>();
-                       item.put("branch", br);
-                       item.put("F", fast);
-                       item.put("A", thor);
-                       item.put("K", taken);
+
+                       fastL = jmessage.getString("Fast7");
+                       thorL = jmessage.getString("Thor");
+                       takenL = jmessage.getString("Taken");
+
+
+                       HashMap<String, String> item;
+                       item= new HashMap<String, String>();
+
+                       item.put("Fast7", fastL);
+                       item.put("Thor", thorL);
+                       item.put("Taken", takenL);
                        data.add(0, item);
-                       System.out.println("Hellooooooooooooooo");
+                       System.out.println("Totalllllll");
                    }
+
 
                    return true;
 

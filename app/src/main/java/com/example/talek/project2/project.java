@@ -112,16 +112,17 @@ public class project extends Activity {
             helper = new MovieDBHelper(getApplicationContext());
             SQLiteDatabase db = helper.getWritableDatabase();
             ContentValues r = new ContentValues();
-            r.put("branch", BR);
-            r.put("F", A);
-            r.put("A", B);
-            r.put("K", C);
+            r.put("Branch", BR);
+            r.put("Fast7", A);
+            r.put("Thor", B);
+            r.put("Taken", C);
             long new_id = db.insert("movie", null, r);
             System.out.println("id" + new_id);
             br = branch.getText().toString().trim();
             fast = inputA.getText().toString().trim();
             thor = inputB.getText().toString().trim();
             taken = inputC.getText().toString().trim();
+
             if(BR.length()>0 && A.length()>0 && B.length()>0 && C.length()>0){
                 System.out.println(br);
                 PostMessageTask p = new PostMessageTask();
@@ -239,10 +240,10 @@ public class project extends Activity {
 
             //////////////////////
             List<NameValuePair> values = new ArrayList<NameValuePair>();
-            values.add(new BasicNameValuePair("branch", brP));
-            values.add(new BasicNameValuePair("F", fastP));
-            values.add(new BasicNameValuePair("A", thorP));
-            values.add(new BasicNameValuePair("K", takenP));
+            values.add(new BasicNameValuePair("Branch", brP));
+            values.add(new BasicNameValuePair("Fast7", fastP));
+            values.add(new BasicNameValuePair("Thor", thorP));
+            values.add(new BasicNameValuePair("Taken", takenP));
             try {
                 p.setEntity(new UrlEncodedFormEntity(values));
                 HttpResponse response = h.execute(p);

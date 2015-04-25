@@ -46,7 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Fast 7"
             android:id="@+id/m1"
             android:layout_weight="0.3"
             android:textSize="25dp"
@@ -56,7 +55,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="0000000"
             android:id="@+id/nm1"
             android:textSize="25dp"
             android:layout_weight="0.25"
@@ -160,5 +158,11 @@
             android:textColor="#000000"
             android:textSize="25dp" />
     </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
