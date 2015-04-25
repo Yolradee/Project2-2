@@ -1,5 +1,6 @@
 package com.example.talek.project2;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -35,24 +36,69 @@ import java.util.logging.Handler;
 public class rank extends ActionBarActivity {
 
     ArrayList<Map<String, String>> data;
+    MovieDBHelper helper;
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+<<<<<<< HEAD
 
         MovieDBHelper helper = new MovieDBHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
-
+=======
+>>>>>>> origin/master
 
         LoadNumberTask task = new LoadNumberTask();
         task.execute();
+       // data = new ArrayList<HashMap<String,String>>();
 
+<<<<<<< HEAD
+        LoadNumberTask task = new LoadNumberTask();
+        task.execute();
+=======
+        adapter= new SimpleAdapter(this, data, R.layout.activity_project,
+                new String[] {"F", "A", "K"}, new int[] {R.id.nm1, R.id.nm2, R.id.nm3});
+>>>>>>> origin/master
+
+        ListView l = (ListView)findViewById(R.id.listView);
+        l.setAdapter(adapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // This method is called when this activity is put foreground.
+
+
+
+//            TextView tvm1 = (TextView)findViewById(R.id.m1);
+//            tvm1.setText(String.format("Fast 7"+"%d", tf));
+//            TextView tvnm1 = (TextView)findViewById(R.id.nm1);
+//            tvnm1.setText(String.format("%d", tf));
+
+
+        }
+
+
+//        TextView tvGP = (TextView)findViewById(R.id.nm1);
+//        TextView tvCR = (TextView)findViewById(R.id.nm2);
+//        TextView tvGPA = (TextView)findViewById(R.id.nm3);
+
+//        tvGP.setText(String.format("%.1f", gp));
+//        tvCR.setText(String.format("%d", cr));
+//        tvGPA.setText(String.format("%.2f", gpa));
+
+//        db.close();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -70,6 +116,10 @@ public class rank extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
             return true;
         }
 
@@ -84,6 +134,11 @@ public class rank extends ActionBarActivity {
            BufferedReader reader;
            StringBuilder buffer = new StringBuilder();
            String line;
+
+           String fastL;
+           String thorL;
+           String takenL;
+
 
            try {
                URL u = new URL("http://ict.siit.tu.ac.th/~u5522773787/its333/fetch.php");
@@ -104,6 +159,7 @@ public class rank extends ActionBarActivity {
                    JSONObject json = new JSONObject(buffer.toString());
                    JSONArray jmsg = json.getJSONArray("msg");
 
+<<<<<<< HEAD
 
                        JSONObject jmessage = jmsg.getJSONObject(0);
                        String br = jmessage.getString("Branch");
@@ -122,6 +178,26 @@ public class rank extends ActionBarActivity {
 
                    TextView tv = (TextView) findViewById(R.id.nm1);
                    tv.setText(String.format("%d",fast));
+=======
+                   for (int i = 0; i < jmsg.length(); i++) {
+                       JSONObject jmessage = jmsg.getJSONObject(i);
+
+                       fastL = jmessage.getString("Fast7");
+                       thorL = jmessage.getString("Thor");
+                       takenL = jmessage.getString("Taken");
+
+
+                       HashMap<String, String> item;
+                       item= new HashMap<String, String>();
+
+                       item.put("Fast7", fastL);
+                       item.put("Thor", thorL);
+                       item.put("Taken", takenL);
+                       data.add(0, item);
+                       System.out.println("Totalllllll");
+                   }
+>>>>>>> origin/master
+
 
                    return true;
 
