@@ -36,8 +36,12 @@ import java.util.logging.Handler;
 
 public class rank extends ActionBarActivity {
 
+<<<<<<< HEAD
     ArrayList<HashMap<String, String>> data;
     MovieDBHelper helper;
+=======
+    ArrayList<Map<String, String>> data;
+>>>>>>> origin/master
     SimpleAdapter adapter;
     Handler h;
     Handler handler;
@@ -47,6 +51,7 @@ public class rank extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rank);
+<<<<<<< HEAD
 
         data = new ArrayList<HashMap<String, String>>();
 
@@ -66,12 +71,20 @@ public class rank extends ActionBarActivity {
         Intent i = new Intent(this, insertName.class);
         startActivity(i);
     }
+=======
+>>>>>>> origin/master
 
+        LoadNumberTask l = new LoadNumberTask();
 
+<<<<<<< HEAD
     public void showClicked(View v) {
 
         Intent i = new Intent(this, showdata.class);
         startActivity(i);
+=======
+        l.execute();
+
+>>>>>>> origin/master
     }
 
 
@@ -95,9 +108,9 @@ public class rank extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-
     }
 
+<<<<<<< HEAD
    class LoadNumberTask extends AsyncTask<String, Void, Boolean> {
 
        @Override
@@ -205,3 +218,65 @@ public class rank extends ActionBarActivity {
            }
        }
 }
+=======
+    class LoadNumberTask extends AsyncTask<String, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            BufferedReader reader;
+            StringBuilder buffer = new StringBuilder();
+            String line;
+
+            try {
+                URL u = new URL("http://ict.siit.tu.ac.th/~u5522773787/its333/fetch.php");
+                HttpURLConnection h = (HttpURLConnection) u.openConnection();
+                h.setDoInput(true);
+                h.connect();
+
+                int response = h.getResponseCode();
+                if (response == 200) {
+                    reader = new BufferedReader(new InputStreamReader(h.getInputStream()));
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line);
+                    }
+
+                    Log.e("LoadMessageTask", buffer.toString());
+
+                    //Parsing JSON and displaying messages
+                    JSONObject json = new JSONObject(buffer.toString());
+                    JSONArray jmsg = json.getJSONArray("msg");
+
+                        JSONObject jmessage = jmsg.getJSONObject(0);
+                        String br = jmessage.getString("branch");
+                        String fast = jmessage.getString("Fast7");
+                        String thor = jmessage.getString("Thor");
+                        String taken = jmessage.getString("Taken");
+
+                        Map<String, String> item = new HashMap<String, String>();
+                        item.put("Branch", br);
+                        item.put("Fast7", fast);
+                        item.put("Thor", thor);
+                        item.put("Taken", taken);
+                        data.add(0, item);
+                        System.out.println("Hellooooooooooooooo");
+
+
+                    return true;
+
+                }
+            } catch (MalformedURLException e) {
+                Log.e("LoadMessageTask", "Invalid URL");
+            } catch (IOException e) {
+                Log.e("LoadMessageTask", "I/O Exception");
+            } catch (JSONException e) {
+                Log.e("LoadMessageTask", "Invalid JSON");
+            }
+            return false;
+
+
+        }
+
+
+    }
+}
+>>>>>>> origin/master
