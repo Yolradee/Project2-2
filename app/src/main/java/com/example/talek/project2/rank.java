@@ -41,9 +41,6 @@ public class rank extends ActionBarActivity{
 
 
         ArrayList<HashMap<String, String>> data;
-
-
-
         SimpleAdapter adapter;
 
 
@@ -63,19 +60,6 @@ public class rank extends ActionBarActivity{
             task.execute();
         }
 
-        public void addClicked(View v){
-
-            Intent i = new Intent(this, insertName.class);
-            startActivity(i);
-        }
-
-
-        public void showClicked(View v) {
-
-            Intent i = new Intent(this, showdata.class);
-            startActivity(i);
-
-   }
 
 
         @Override
@@ -109,9 +93,6 @@ public class rank extends ActionBarActivity{
                 StringBuilder buffer = new StringBuilder();
                 String line;
 
-                int fastL;
-                int thorL;
-                int takenL;
 
 
                 try {
@@ -136,11 +117,11 @@ public class rank extends ActionBarActivity{
 
                         JSONObject jmessage = jmsg.getJSONObject(0);
 
-                        fastL = jmessage.getInt("Fast7");
-                        thorL = jmessage.getInt("Thor");
-                        takenL = jmessage.getInt("Taken");
+                        int fastL = jmessage.getInt("Fast7");
+                        int thorL = jmessage.getInt("Thor");
+                        int takenL = jmessage.getInt("Taken");
 
-
+                        System.out.println(""+fastL+"   "+thorL+"  "+takenL);
                         HashMap<String, String> item;
                         item = new HashMap<String, String>();
 
@@ -150,31 +131,31 @@ public class rank extends ActionBarActivity{
                             item.put("Taken", String.format("Taken  " + "%d", takenL));
                             data.add(0, item);
                         }
-                        if (fastL >= thorL && thorL <= takenL) {
+                        else if (fastL >= thorL && thorL <= takenL) {
                             item.put("Fast7", String.format("Fast7  " + "%d", fastL));
                             item.put("Thor", String.format("Thor  " + "%d", takenL));
                             item.put("Taken", String.format("Taken  " + "%d", thorL));
                             data.add(0, item);
                         }
-                        if (fastL <= thorL && fastL >= takenL) {
+                        else if (fastL <= thorL && fastL >= takenL) {
                             item.put("Fast7", String.format("Thor  " + "%d", thorL));
                             item.put("Thor", String.format("Fast7  " + "%d", fastL));
                             item.put("Taken", String.format("Taken  " + "%d", takenL));
                             data.add(0, item);
                         }
-                        if (fastL <= thorL && fastL <= takenL) {
+                        else if (fastL <= thorL && fastL <= takenL) {
                             item.put("Fast7", String.format("Thor  " + "%d", thorL));
                             item.put("Thor", String.format("Taken  " + "%d", takenL));
                             item.put("Taken", String.format("Fast7  " + "%d", fastL));
                             data.add(0, item);
                         }
-                        if (fastL >= thorL && fastL <= takenL) {
+                      else if (fastL >= thorL && fastL <= takenL) {
                             item.put("Fast7", String.format("Taken  " + "%d", takenL));
                             item.put("Thor", String.format("Fast7  " + "%d", fastL));
                             item.put("Taken", String.format("Thor  " + "%d", thorL));
                             data.add(0, item);
                         }
-                        if (fastL <= thorL && fastL <= takenL) {
+                        else if (fastL <= thorL && fastL <= takenL) {
                             item.put("Fast7", String.format("Taken  " + "%d", takenL));
                             item.put("Thor", String.format("Thor  " + "%d", thorL));
                             item.put("Taken", String.format("Fast7  " + "%d", fastL));
@@ -197,10 +178,11 @@ public class rank extends ActionBarActivity{
 
             protected void onPostExecute(Boolean result) {
                 if (result) {
-                    Log.e("LoadNumberTask", "Successfully Load");
-                } else {
-                    Log.e("LoadNumberTask", "Unable Load");
-
+                    adapter.notifyDataSetChanged();
+                    Toast t = Toast.makeText(rank.this.getApplicationContext(),
+                            "Updated the timeline",
+                            Toast.LENGTH_SHORT);
+                    t.show();
                 }
             }
         }

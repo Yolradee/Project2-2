@@ -71,6 +71,7 @@ public class project extends ActionBarActivity {
     public void buttonClicked(View v) {
         EditText etUser = (EditText) findViewById(R.id.editText);
         user = etUser.getText().toString().trim();
+
         if (user.length() > 0 && user.equals("rama9")) {
             Intent a = new Intent(this, insertName.class);
             a.putExtra("user", user);
@@ -99,6 +100,8 @@ public class project extends ActionBarActivity {
 
 
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

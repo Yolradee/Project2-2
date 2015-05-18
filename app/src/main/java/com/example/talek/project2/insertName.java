@@ -60,13 +60,14 @@ public class insertName extends ActionBarActivity {
     String fast;
     String thor;
     String taken;
+    String ddate;
 
     final static String urlGoogleChart
             = "http://chart.apis.google.com/chart";
     final static String urlp3Api
-            = "?chxs=0,000000,25&chxt=x&cht=p3&chdls=000000,20&chs=700x350&chco=FF9999|A3FF47|75D1FF&chl=Fast7|Thor|Taken&chd=t:";
+            = "?chxs=0,000000,25&chxt=x&cht=p3&chdls=000000,20&chs=600x250&chco=FF9999|A3FF47|75D1FF&chl=Fast7|Thor|Taken&chd=t:";
 
-    EditText  inputA, inputB, inputC;
+    EditText  inputA, inputB, inputC, inputD;
     Button generate;
     ImageView pieChart;
     MovieDBHelper helper;
@@ -100,6 +101,7 @@ public class insertName extends ActionBarActivity {
               tv.setText("Branch : Rangsit");
          }
 
+        inputD = (EditText) findViewById(R.id.ddata);
         inputA = (EditText) findViewById(R.id.adata);
         inputB = (EditText) findViewById(R.id.bdata);
         inputC = (EditText) findViewById(R.id.cdata);
@@ -110,60 +112,25 @@ public class insertName extends ActionBarActivity {
 
     }
 
-//     Button.OnClickListener generateOnClickListener
-//                = new Button.OnClickListener(){
-//
-//        @Override
-//        public void onClick(View arg0) {
-//
-//            String A = inputA.getText().toString();
-//            int AA = Integer.parseInt(A);
-//
-//            String B = inputB.getText().toString();
-//            int BB = Integer.parseInt(B);
-//
-//            String C = inputC.getText().toString();
-//            int CC = Integer.parseInt(C);
-//
-//            System.out.println(" " + AA + "   " + BB + "   " + CC);
-//
-//            String urlRqs3DPie = urlGoogleChart
-//                    + urlp3Api
-//                    + AA + "," + BB + "," + CC;
-//            Log.d("R_url", urlRqs3DPie);
-//            LoadBitmap_atask loadbitmap = new LoadBitmap_atask();
-//            loadbitmap.execute(urlRqs3DPie);
-//            //   Bitmap bm3DPie = loadChart(urlRqs3DPie);
-//
-//            helper = new MovieDBHelper(getApplicationContext());
-//            SQLiteDatabase db = helper.getWritableDatabase();
-//            ContentValues r = new ContentValues();
-//
-//            r.put("f", A);
-//            r.put("t", B);
-//            r.put("ta", C);
-//            long new_id = db.insert("movies", null, r);
-//            System.out.println("id" + new_id);
-//
-//            fast = inputA.getText().toString().trim();
-//            thor = inputB.getText().toString().trim();
-//            taken = inputC.getText().toString().trim();
-
-
     Button.OnClickListener generateOnClickListener
-            = new Button.OnClickListener(){
+            = new Button.OnClickListener() {
 
         @Override
         public void onClick(View arg0) {
             // TODO Auto-generated method stub
 
+            String D = inputD.getText().toString();
             String A = inputA.getText().toString();
+            int AA = Integer.parseInt(A);
             String B = inputB.getText().toString();
+            int BB = Integer.parseInt(B);
             String C = inputC.getText().toString();
-            System.out.println( " " + A + "   " + B + "   " + C);
+            int CC = Integer.parseInt(C);
+
+            System.out.println(" "+ D  + " "+ AA + "   " + BB + "   " + CC);
             String urlRqs3DPie = urlGoogleChart
                     + urlp3Api
-                    + A + "," + B + "," + C;
+                    + AA + "," + BB + "," + CC;
             Log.d("R_url", urlRqs3DPie);
             LoadBitmap_atask loadbitmap = new LoadBitmap_atask();
             loadbitmap.execute(urlRqs3DPie);
@@ -171,49 +138,54 @@ public class insertName extends ActionBarActivity {
             helper = new MovieDBHelper(getApplicationContext());
             SQLiteDatabase db = helper.getWritableDatabase();
             ContentValues r = new ContentValues();
-
-            r.put("fastA", A);
-            r.put("thorA", B);
-            r.put("takenA", C);
+            r.put("date", D);
+            r.put("fastA", AA);
+            r.put("thorA", BB);
+            r.put("takenA", CC);
             long new_id = db.insert("movies", null, r);
             System.out.println("id" + new_id);
+            System.out.println(D+"    "+AA +"     "+BB+"   "+CC);
 
+            ddate = inputD.getText().toString().trim();
             fast = inputA.getText().toString().trim();
             thor = inputB.getText().toString().trim();
             taken = inputC.getText().toString().trim();
 
-            PostMessageTask p = new PostMessageTask();
-            p.execute(fast, thor, taken);
 
-        }};
+            if (ddate.length()>=0 && fast.length() >= 0 && thor.length() >= 0 && taken.length() >= 0) {
+                Toast t = Toast.makeText(insertName.this.getApplicationContext(),
+                        "Insert to database",
+                        Toast.LENGTH_SHORT);
+                t.show();
+                PostMessageTask p = new PostMessageTask();
+                p.execute(fast, thor, taken);
 
-//            if (fast.length() > 0 && thor.length() > 0 && taken.length() > 0) {
+//            } else if (fast.equals(" ") && thor.equals(" ") && taken.equals(" ")) {
 //                Toast t = Toast.makeText(insertName.this.getApplicationContext(),
-//                        "Insert to database",
+//                        "Please add information",
 //                        Toast.LENGTH_SHORT);
 //                t.show();
 //
-//            }else if (fast.equals("")&& thor.equals("")&& taken.equals("")) {
-//                 Toast t = Toast.makeText(insertName.this,
-//                    "Please add information",
-//                    Toast.LENGTH_SHORT);
-//            t.show();
-//
-//        }
-//            PostMessageTask p = new PostMessageTask();
-//            p.execute(fast, thor, taken);
-
+            }
+        }
+    };
 
     public void ShowClick(View v) {
         Intent i;
         i = new Intent(this, showdata.class);
         i.putExtra("user",user);
-        i.putExtra("f",fast);
-        i.putExtra("t",thor);
-        i.putExtra("tk",taken);
+        i.putExtra("date",user);
+        i.putExtra("fastA",fast);
+        i.putExtra("thorA",thor);
+        i.putExtra("takenA",taken);
         startActivity(i);
     }
 
+
+    public void RankClick(View v) {
+        Intent r = new Intent(this, rank.class);
+        startActivity(r);
+    }
 
     class LoadBitmap_atask extends AsyncTask<String, String, Boolean> {
 
